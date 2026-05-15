@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap');
+
+:root {
+  --bg-base: #141414;
+  --bg-surface: #1E1E1E;
+  --bg-card: #242424;
+  --bg-card-hover: #2A2A2A;
+  --bg-elevated: #2E2E2E;
+  --blue: #2B7FFF;
+  --blue-bright: #4A92FF;
+  --blue-dim: #1A5FCC;
+  --blue-mist: rgba(43,127,255,0.12);
+  --blue-border: rgba(43,127,255,0.3);
+  --white: #FFFFFF;
+  --text-primary: #F0F0F0;
+  --text-secondary: #9A9A9A;
+  --text-muted: #606060;
+  --border: rgba(255,255,255,0.07);
+  --border-strong: rgba(255,255,255,0.14);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(20,20,20,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 32px; height: 52px; gap: 0;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--white);
+  margin-right: 28px;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+}
+.nav-logo span { color: var(--blue); }
+.nav-tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.nav-tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 5px 12px; border-radius: 6px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer; border: none;
+  background: none; white-space: nowrap;
+  transition: all 0.18s;
+}
+.tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+.tab.active { background: var(--blue); color: white; }
+
+/* SECTIONS */
+.section { display: none; padding: 40px 32px; max-width: 860px; margin: 0 auto; }
+.section.active { display: block; }
+
+/* HERO */
+.hero {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 48px 44px;
+  position: relative; overflow: hidden;
+  margin-bottom: 32px;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(43,127,255,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -60px; left: -40px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(43,127,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue-mist); border: 1px solid var(--blue-border);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 11px; font-weight: 600;
+  color: var(--blue-bright); letter-spacing: 0.6px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.hero-eyebrow::before { content: '●'; font-size: 7px; animation: blink 1.8s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 38px; font-weight: 800;
+  line-height: 1.1; color: var(--white);
+  margin-bottom: 14px; position: relative; z-index: 1;
+  letter-spacing: -0.8px;
+}
+.hero h1 em { font-style: normal; color: var(--blue); }
+.hero p {
+  font-size: 14px; color: var(--text-secondary);
+  max-width: 460px; line-height: 1.75;
+  position: relative; z-index: 1; margin-bottom: 28px;
+}
+.hero-pillars { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+.pillar {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px; font-size: 12px; font-weight: 500;
+  color: var(--text-primary);
+}
+.pillar small { display: block; font-size: 10px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+
+/* LABELS */
+.eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 8px; letter-spacing: -0.4px; }
+.desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 32px; max-width: 500px; line-height: 1.75; }
+.divider { height: 1px; background: var(--border); margin: 36px 0; }
+
+/* CARDS */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+}
+.card-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+
+/* OVERVIEW GRID */
+.overview-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.overview-card:hover { border-color: var(--blue-border); background: var(--bg-card-hover); transform: translateY(-2px); }
+.ov-icon { font-size: 22px; margin-bottom: 10px; }
+.ov-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.ov-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* COLORS */
+.swatch-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
+.swatch {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.2s;
+}
+.swatch:hover { transform: translateY(-2px); }
+.swatch-body { height: 80px; display: flex; align-items: flex-end; padding: 10px; position: relative; }
+.swatch-pill { background: rgba(0,0,0,0.35); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; color: white; letter-spacing: 0.3px; }
+.swatch-info { padding: 12px 14px; background: var(--bg-card); }
+.swatch-name { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.swatch-hex { font-size: 10px; color: var(--text-muted); font-family: monospace; }
+.swatch-use { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.copied { background: var(--blue) !important; color: white !important; }
+
+.scale-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+.scale-row { display: flex; gap: 3px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 20px; }
+.scale-stop { flex: 1; height: 28px; cursor: pointer; transition: flex 0.2s; }
+.scale-stop:hover { flex: 2; }
+
+/* TYPOGRAPHY */
+.type-sample {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin-bottom: 12px;
+}
+.type-meta { font-size: 10px; color: var(--text-muted); margin-bottom: 10px; font-family: monospace; letter-spacing: 0.3px; }
+.t-display { font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -1px; }
+.t-h1 { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 700; color: var(--white); letter-spacing: -0.5px; }
+.t-h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; }
+.t-h2-blue { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--blue); letter-spacing: -0.3px; }
+.t-body { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.t-caption { font-size: 12px; color: var(--text-muted); }
+.t-label { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--blue); }
+.t-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* BUTTONS */
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 18px; border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif; font-size: 13px;
+  font-weight: 500; cursor: pointer; border: none;
+  transition: all 0.18s;
+}
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--blue-bright); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--white); border: 1px solid var(--border-strong); }
+.btn-outline:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-mist); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: none; }
+.btn-ghost:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+.btn-destructive { background: rgba(220,60,60,0.15); color: #F06060; border: 1px solid rgba(220,60,60,0.25); }
+
+/* BADGES */
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.badge-blue { background: var(--blue-mist); color: var(--blue-bright); border: 1px solid var(--blue-border); }
+.badge-success { background: rgba(34,197,94,0.12); color: #4ADE80; border: 1px solid rgba(34,197,94,0.25); }
+.badge-warning { background: rgba(251,191,36,0.12); color: #FCD34D; border: 1px solid rgba(251,191,36,0.2); }
+.badge-muted { background: rgba(255,255,255,0.06); color: var(--text-secondary); border: 1px solid var(--border); }
+.badge-hot { background: rgba(239,68,68,0.12); color: #F87171; border: 1px solid rgba(239,68,68,0.2); }
+
+/* LESSON CARD */
+.lesson-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex; gap: 14px; align-items: center;
+  cursor: pointer; transition: all 0.18s; margin-bottom: 8px;
+}
+.lesson-card:hover { border-color: var(--blue-border); background: var(--bg-card-hover); }
+.lc-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--bg-elevated); border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.lc-title { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+.lc-meta { font-size: 11px; color: var(--text-muted); }
+.lc-bar { margin-top: 8px; height: 2px; background: var(--border-strong); border-radius: 2px; overflow: hidden; }
+.lc-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 1s ease; }
+
+/* INPUT */
+.input {
+  width: 100%; padding: 10px 14px;
+  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  font-family: 'Inter', sans-serif; font-size: 13px;
+  outline: none; transition: all 0.18s; margin-bottom: 10px; display: block;
+}
+.input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(43,127,255,0.12); }
+.input::placeholder { color: var(--text-muted); }
+
+/* PROGRESS RINGS */
+.rings { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+.ring-wrap { text-align: center; }
+.ring-lbl { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
+/* VOICE */
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.voice-card { border-radius: var(--radius); padding: 18px; }
+.vc-do { background: rgba(43,127,255,0.06); border: 1px solid rgba(43,127,255,0.2); }
+.vc-dont { background: rgba(220,60,60,0.05); border: 1px solid rgba(220,60,60,0.18); }
+.vc-tag { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+.vc-do .vc-tag { background: rgba(43,127,255,0.15); color: var(--blue-bright); }
+.vc-dont .vc-tag { background: rgba(220,60,60,0.15); color: #F06060; }
+.vc-text { font-size: 13px; line-height: 1.65; color: var(--text-primary); }
+.vc-dont .vc-text { color: var(--text-muted); text-decoration: line-through; text-decoration-color: rgba(220,60,60,0.4); }
+.vc-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+
+/* LOGO SECTION */
+.logo-showcase {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 48px; text-align: center; margin-bottom: 20px;
+}
+.logo-mark {
+  font-family: 'Syne', sans-serif;
+  font-size: 50px; font-weight: 800;
+  color: var(--white); letter-spacing: -1.5px;
+  display: inline-block; margin-bottom: 8px;
+}
+.logo-mark span { color: var(--blue); }
+.logo-tagline { font-size: 12px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
+.logo-variants { display: flex; gap: 14px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+.lv {
+  padding: 18px 26px; border-radius: var(--radius);
+  border: 1px solid var(--border); display: flex;
+  flex-direction: column; align-items: center; gap: 8px;
+}
+.lv-light { background: var(--white); }
+.lv-mid { background: #0A0A0A; border-color: rgba(255,255,255,0.05); }
+.lv-blue { background: var(--blue); border-color: transparent; }
+.lv-light .logo-mark { color: #0D0D0D; }
+.lv-light .logo-mark span { color: var(--blue); }
+.lv-blue .logo-mark { color: white; }
+.lv-blue .logo-mark span { color: rgba(255,255,255,0.75); }
+.lv-label { font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.lv-light .lv-label { color: #999; }
+.lv-blue .lv-label { color: rgba(255,255,255,0.5); }
+
+/* MOTION */
+.motion-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; gap: 18px; align-items: center; margin-bottom: 12px; }
+.mo-demo { width: 72px; height: 72px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.mo-info h4 { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.mo-info p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+.mo-info code { font-size: 10px; background: rgba(43,127,255,0.12); color: var(--blue-bright); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+
+/* ANIMATIONS */
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+@keyframes pulse-ring { 0%{transform:scale(1);opacity:1} 70%{transform:scale(1.5);opacity:0} 100%{opacity:0} }
+@keyframes slide-r { from{transform:translateX(-10px);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes fill-bar { from{width:0} to{width:var(--w,72%)} }
+
+.anim-float { animation: float 2.4s ease-in-out infinite; }
+.anim-slide { animation: slide-r 0.4s ease-out both; }
+.bar-animated { animation: fill-bar 1s 0.4s ease-out both; }
+
+/* SKELETON SHIMMER */
+.shimmer-base {
+  background: var(--bg-elevated);
+  border-radius: 4px; position: relative; overflow: hidden;
+}
+.shimmer-base::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* PULSE DOT */
+.pulse-dot { width: 14px; height: 14px; background: var(--blue); border-radius: 50%; position: relative; }
+.pulse-dot::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: var(--blue); animation: pulse-ring 2s ease-out infinite;
+}
+
+/* SPEC TABLE */
+.spec-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.spec-row:last-child { border-bottom: none; }
+.spec-k { font-size: 12px; color: var(--text-muted); }
+.spec-v { font-size: 12px; color: var(--white); font-family: monospace; }
+
+/* SA BADGE (inspired by site) */
+.sa-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; background: var(--blue);
+  border-radius: 8px; font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 800; color: white; letter-spacing: -0.5px;
+}
+
+@media (max-width: 600px) {
+  .section { padding: 28px 18px; }
+  .hero { padding: 32px 24px; }
+  .hero h1 { font-size: 28px; }
+  .swatch-grid { grid-template-columns: 1fr 1fr; }
+  .grid-2, .voice-grid, .t-pair { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Think<span>WithClaude</span></div>
+  <div class="nav-tabs">
+    <button class="tab active" onclick="go('overview')">Overview</button>
+    <button class="tab" onclick="go('logo')">Logo</button>
+    <button class="tab" onclick="go('colors')">Colors</button>
+    <button class="tab" onclick="go('typography')">Type</button>
+    <button class="tab" onclick="go('components')">Components</button>
+    <button class="tab" onclick="go('voice')">Voice</button>
+    <button class="tab" onclick="go('motion')">Motion</button>
+  </div>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="section active">
+  <div class="hero">
+    <div class="hero-eyebrow">Brand Guidelines v1.0</div>
+    <h1>Stop spending 3 hours<br>on work that takes <em>20 minutes.</em></h1>
+    <p>ThinkWithClaude is a personal intensive brand built around Shantanu Anand — direct, premium, and results-obsessed. Every touchpoint should feel like you've walked into a founder's war room.</p>
+    <div class="hero-pillars">
+      <div class="pillar">⚡ Direct<small>No fluff, no hedging</small></div>
+      <div class="pillar">🧠 Expert<small>8 yrs marketing depth</small></div>
+      <div class="pillar">🎯 Proof-led<small>Results before claims</small></div>
+      <div class="pillar">🌑 Premium dark<small>Confident, not cold</small></div>
+    </div>
+  </div>
+
+  <div class="eyebrow">Navigate the system</div>
+  <div class="title">Brand foundations</div>
+  <div class="desc">Everything you need to build consistent experiences — from pitch deck to product to app.</div>
+
+  <div class="grid-2" style="margin-bottom:14px">
+    <div class="overview-card" onclick="go('logo')"><div class="ov-icon">🔤</div><div class="ov-title">Logo & Identity</div><div class="ov-desc">Wordmark, SA monogram, clearspace and background rules</div></div>
+    <div class="overview-card" onclick="go('colors')"><div class="ov-icon">🎨</div><div class="ov-title">Color System</div><div class="ov-desc">Dark base, electric blue accent, semantic tokens</div></div>
+    <div class="overview-card" onclick="go('typography')"><div class="ov-icon">✍️</div><div class="ov-title">Typography</div><div class="ov-desc">Syne for impact, Inter for clarity — full scale</div></div>
+    <div class="overview-card" onclick="go('components')"><div class="ov-icon">🧩</div><div class="ov-title">UI Components</div><div class="ov-desc">Buttons, cards, badges, inputs, progress</div></div>
+    <div class="overview-card" onclick="go('voice')"><div class="ov-icon">💬</div><div class="ov-title">Voice & Tone</div><div class="ov-desc">Direct, proof-first, never hype-driven</div></div>
+    <div class="overview-card" onclick="go('motion')"><div class="ov-icon">✨</div><div class="ov-title">Motion & Feel</div><div class="ov-desc">Purposeful, swift, never decorative</div></div>
+  </div>
+
+  <!-- LEARN BY GO strip -->
+  <div style="background:var(--bg-surface);border:1px solid var(--blue-border);border-radius:var(--radius-lg);padding:28px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(43,127,255,0.15) 0%,transparent 70%);pointer-events:none"></div>
+    <div style="flex:1;min-width:200px">
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--white);margin-bottom:4px">The "Learn by Go" principle</div>
+      <div style="font-size:12px;color:var(--text-secondary)">Every session, every module, every prompt — one clear step forward. Progress should always be visible, never abstract.</div>
+    </div>
+    <div style="background:var(--blue);color:white;border-radius:var(--radius-sm);padding:10px 18px;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0">Explore the system →</div>
+  </div>
+</div>
+
+<!-- LOGO -->
+<div id="logo" class="section">
+  <div class="eyebrow">Identity</div>
+  <div class="title">Logo & wordmark</div>
+  <div class="desc">Upload your logo file here to lock it into the guidelines. For now the system uses your site's typographic identity as a reference.</div>
+
+  <div class="logo-showcase">
+    <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:16px">
+      <div class="sa-badge">SA</div>
+      <div>
+        <div class="logo-mark">Think<span>WithClaude</span></div>
+      </div>
+    </div>
+    <div class="logo-tagline">Claude AI Trainer · 8 yrs marketing</div>
+    <div class="logo-variants">
+      <div class="lv lv-light">
+        <div class="logo-mark" style="font-size:24px">Think<span>WithClaude</span></div>
+        <div class="lv-label">On Light</div>
+      </div>
+      <div class="lv lv-mid">
+        <div class="logo-mark" style="font-size:24px">Think<span>WithClaude</span></div>
+        <div class="lv-label">On Dark</div>
+      </div>
+      <div class="lv lv-blue">
+        <div class="logo-mark" style="font-size:24px">Think<span>WithClaude</span></div>
+        <div class="lv-label">On Blue</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card"><div class="card-label">✅ Do</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.9">Use the full wordmark as primary expression<br>Keep "SA" monogram for favicon and app icon<br>Minimum 32px height for digital use<br>Always pair with the blue accent on the last word</div></div>
+    <div class="card"><div class="card-label">❌ Don't</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.9">Place on low-contrast mid-gray backgrounds<br>Separate "Think" from "WithClaude"<br>Add drop shadows, glows, or outlines<br>Recolor the blue accent to any other hue</div></div>
+  </div>
+</div>
+
+<!-- COLORS -->
+<div id="colors" class="section">
+  <div class="eyebrow">Palette</div>
+  <div class="title">Color system</div>
+  <div class="desc">A dark-first system anchored by near-black surfaces and a single electric blue accent. The blue does all the work — it draws the eye, signals action, and carries the brand personality.</div>
+
+  <div class="swatch-grid">
+    <div class="swatch" onclick="copyHex(this,'#141414')">
+      <div class="swatch-body" style="background:#141414;border-bottom:1px solid rgba(255,255,255,0.06)"><span class="swatch-pill">Base</span></div>
+      <div class="swatch-info"><div class="swatch-name">Base black</div><div class="swatch-hex">#141414</div><div class="swatch-use">Page background</div></div>
+    </div>
+    <div class="swatch" onclick="copyHex(this,'#1E1E1E')">
+      <div class="swatch-body" style="background:#1E1E1E;border-bottom:1px solid rgba(255,255,255,0.06)"><span class="swatch-pill">Surface</span></div>
+      <div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-hex">#1E1E1E</div><div class="swatch-use">Hero panels, sections</div></div>
+    </div>
+    <div class="swatch" onclick="copyHex(this,'#242424')">
+      <div class="swatch-body" style="background:#242424;border-bottom:1px solid rgba(255,255,255,0.06)"><span class="swatch-pill">Card</span></div>
+      <div class="swatch-info"><div class="swatch-name">Card</div><div class="swatch-hex">#242424</div><div class="swatch-use">Cards, panels</div></div>
+    </div>
+    <div class="swatch" onclick="copyHex(this,'#2B7FFF')">
+      <div class="swatch-body" style="background:#2B7FFF"><span class="swatch-pill">Primary</span></div>
+      <div class="swatch-info"><div class="swatch-name">Electric Blue</div><div class="swatch-hex">#2B7FFF</div><div class="swatch-use">CTAs, links, highlights</div></div>
+    </div>
+    <div class="swatch" onclick="copyHex(this,'#F0F0F0')">
+      <div class="swatch-body" style="background:#F0F0F0"><span class="swatch-pill" style="color:#333">Text</span></div>
+      <div class="swatch-info"><div class="swatch-name">Primary text</div><div class="swatch-hex">#F0F0F0</div><div class="swatch-use">Headings, key copy</div></div>
+    </div>
+    <div class="swatch" onclick="copyHex(this,'#9A9A9A')">
+      <div class="swatch-body" style="background:#9A9A9A"><span class="swatch-pill">Muted</span></div>
+      <div class="swatch-info"><div class="swatch-name">Secondary text</div><div class="swatch-hex">#9A9A9A</div><div class="swatch-use">Body, subtitles</div></div>
+    </div>
+  </div>
+
+  <div class="scale-label">Electric Blue — tint scale (click to copy)</div>
+  <div class="scale-row">
+    <div class="scale-stop" style="background:#E8F1FF" title="#E8F1FF" onclick="copyHex(null,'#E8F1FF')"></div>
+    <div class="scale-stop" style="background:#B3CFFF" onclick="copyHex(null,'#B3CFFF')"></div>
+    <div class="scale-stop" style="background:#7AADFF" onclick="copyHex(null,'#7AADFF')"></div>
+    <div class="scale-stop" style="background:#4A92FF" onclick="copyHex(null,'#4A92FF')"></div>
+    <div class="scale-stop" style="background:#2B7FFF" onclick="copyHex(null,'#2B7FFF')"></div>
+    <div class="scale-stop" style="background:#1A5FCC" onclick="copyHex(null,'#1A5FCC')"></div>
+    <div class="scale-stop" style="background:#0D3D99" onclick="copyHex(null,'#0D3D99')"></div>
+    <div class="scale-stop" style="background:#071F66" onclick="copyHex(null,'#071F66')"></div>
+  </div>
+
+  <div class="scale-label">Neutral dark scale</div>
+  <div class="scale-row">
+    <div class="scale-stop" style="background:#F0F0F0"></div>
+    <div class="scale-stop" style="background:#9A9A9A"></div>
+    <div class="scale-stop" style="background:#606060"></div>
+    <div class="scale-stop" style="background:#3A3A3A"></div>
+    <div class="scale-stop" style="background:#2E2E2E"></div>
+    <div class="scale-stop" style="background:#242424"></div>
+    <div class="scale-stop" style="background:#1E1E1E"></div>
+    <div class="scale-stop" style="background:#141414"></div>
+  </div>
+
+  <div class="card" style="margin-top:4px">
+    <div class="card-label">Semantic tokens</div>
+    <div class="spec-row"><span class="spec-k">Success</span><span class="spec-v" style="color:#4ADE80">#22C55E — 12% opacity bg</span></div>
+    <div class="spec-row"><span class="spec-k">Warning</span><span class="spec-v" style="color:#FCD34D">#F59E0B — 12% opacity bg</span></div>
+    <div class="spec-row"><span class="spec-k">Error</span><span class="spec-v" style="color:#F87171">#DC3C3C — 12% opacity bg</span></div>
+    <div class="spec-row"><span class="spec-k">Info</span><span class="spec-v" style="color:#4A92FF">Electric Blue at 12% opacity bg</span></div>
+  </div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div id="typography" class="section">
+  <div class="eyebrow">Type system</div>
+  <div class="title">Typography</div>
+  <div class="desc">Syne for authority and impact. Inter for clarity at every size. Together they project expertise without screaming.</div>
+
+  <div class="type-sample">
+    <div class="type-meta">Syne 800 · Display · 44px · letter-spacing -1px</div>
+    <div class="t-display">Stop wasting your best hours.</div>
+  </div>
+
+  <div class="t-pair">
+    <div class="type-sample">
+      <div class="type-meta">Syne 700 · H1 · 30px</div>
+      <div class="t-h1">Results, not lessons.</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-meta">Syne 700 · H2 · 22px · Blue</div>
+      <div class="t-h2-blue">50+ professionals trained</div>
+    </div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">Inter 400 · Body · 14px / 1.8</div>
+    <div class="t-body">A private intensive where I rewire how you work — on your real clients, your real tools, your real brand — so you get your week back.</div>
+  </div>
+
+  <div class="t-pair">
+    <div class="type-sample">
+      <div class="type-meta">Inter 400 · Caption · 12px</div>
+      <div class="t-caption">Claude AI Trainer · 8 yrs marketing</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-meta">Inter 700 · Overline · 10px + 1.4px tracking</div>
+      <div class="t-label">The transformation</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Type scale</div>
+    <div class="spec-row"><span class="spec-k">Display</span><span class="spec-v">Syne 800 · 44–56px</span></div>
+    <div class="spec-row"><span class="spec-k">H1</span><span class="spec-v">Syne 700 · 30–36px</span></div>
+    <div class="spec-row"><span class="spec-k">H2</span><span class="spec-v">Syne 700 · 22–26px</span></div>
+    <div class="spec-row"><span class="spec-k">H3</span><span class="spec-v">Syne 600 · 16–18px</span></div>
+    <div class="spec-row"><span class="spec-k">Body</span><span class="spec-v">Inter 400 · 14–15px / 1.75</span></div>
+    <div class="spec-row"><span class="spec-k">Caption</span><span class="spec-v">Inter 400 · 12px</span></div>
+    <div class="spec-row"><span class="spec-k">Label/Overline</span><span class="spec-v">Inter 700 · 10–11px · 1.4px tracking</span></div>
+  </div>
+</div>
+
+<!-- COMPONENTS -->
+<div id="components" class="section">
+  <div class="eyebrow">Design system</div>
+  <div class="title">UI components</div>
+  <div class="desc">Every component reflects the same energy as the site — dark, precise, blue-accented. Progress is always visible. Actions are always clear.</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Book a session →</button>
+        <button class="btn btn-outline">See results</button>
+        <button class="btn btn-ghost">Learn more</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Status badges</div>
+      <div class="badge-row">
+        <span class="badge badge-blue">● Live</span>
+        <span class="badge badge-success">✓ Complete</span>
+        <span class="badge badge-warning">In progress</span>
+        <span class="badge badge-muted">Locked</span>
+        <span class="badge badge-hot">50+ trained</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-label">Module / lesson cards</div>
+    <div class="lesson-card">
+      <div class="lc-icon">⚡</div>
+      <div style="flex:1">
+        <div class="lc-title">Prompt engineering for real work</div>
+        <div class="lc-meta">Session 1 · 45 min · Live intensive</div>
+        <div class="lc-bar"><div class="lc-fill bar-animated" style="--w:72%;width:0"></div></div>
+      </div>
+      <span class="badge badge-warning" style="flex-shrink:0">72%</span>
+    </div>
+    <div class="lesson-card">
+      <div class="lc-icon">🧠</div>
+      <div style="flex:1">
+        <div class="lc-title">AI workflows for marketing ops</div>
+        <div class="lc-meta">Session 2 · 60 min · Recorded</div>
+        <div class="lc-bar"><div class="lc-fill" style="width:100%;background:#4ADE80"></div></div>
+      </div>
+      <span class="badge badge-success" style="flex-shrink:0">✓ Done</span>
+    </div>
+    <div class="lesson-card">
+      <div class="lc-icon">🎯</div>
+      <div style="flex:1">
+        <div class="lc-title">Build your AI content engine</div>
+        <div class="lc-meta">Session 3 · 50 min · Upcoming</div>
+        <div class="lc-bar"><div class="lc-fill" style="width:0"></div></div>
+      </div>
+      <span class="badge badge-muted" style="flex-shrink:0">Locked</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Text inputs</div>
+      <input class="input" placeholder="Search sessions, topics…" />
+      <input class="input" placeholder="Your email address" />
+    </div>
+    <div class="card">
+      <div class="card-label">Progress rings</div>
+      <div class="rings">
+        <div class="ring-wrap">
+          <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4.5"/>
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#2B7FFF" stroke-width="4.5" stroke-dasharray="150.8" stroke-dashoffset="37.7" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+            <text x="30" y="35" text-anchor="middle" font-size="12" font-weight="600" fill="#F0F0F0" font-family="Inter">75%</text>
+          </svg>
+          <div class="ring-lbl">Progress</div>
+        </div>
+        <div class="ring-wrap">
+          <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4.5"/>
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#4ADE80" stroke-width="4.5" stroke-dasharray="150.8" stroke-dashoffset="15" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+            <text x="30" y="35" text-anchor="middle" font-size="12" font-weight="600" fill="#F0F0F0" font-family="Inter">90%</text>
+          </svg>
+          <div class="ring-lbl">Module</div>
+        </div>
+        <div class="ring-wrap">
+          <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4.5"/>
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#FCD34D" stroke-width="4.5" stroke-dasharray="150.8" stroke-dashoffset="90.5" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+            <text x="30" y="35" text-anchor="middle" font-size="12" font-weight="600" fill="#F0F0F0" font-family="Inter">40%</text>
+          </svg>
+          <div class="ring-lbl">Streak</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VOICE -->
+<div id="voice" class="section">
+  <div class="eyebrow">Communication</div>
+  <div class="title">Voice & tone</div>
+  <div class="desc">ThinkWithClaude sounds like a founder who's already done the work. Confident, specific, and free of marketing-speak. Every line should pass the "would a busy exec read this?" test.</div>
+
+  <div style="background:var(--bg-surface);border:1px solid var(--border-strong);border-radius:var(--radius);padding:20px;margin-bottom:20px">
+    <div class="card-label">Personality spectrum</div>
+    <div style="display:flex;gap:0;border-radius:var(--radius-sm);overflow:hidden;margin-top:12px">
+      <div style="flex:1;background:#1A1A2E;border:1px solid var(--blue-border);padding:12px;font-size:12px;font-weight:600;color:var(--blue-bright)">Direct<br><span style="font-size:10px;font-weight:400;color:var(--text-muted)">not harsh</span></div>
+      <div style="flex:1;background:#1A1A2E;border:1px solid var(--blue-border);border-left:none;padding:12px;font-size:12px;font-weight:600;color:var(--blue-bright)">Specific<br><span style="font-size:10px;font-weight:400;color:var(--text-muted)">not vague</span></div>
+      <div style="flex:1;background:#1A1A2E;border:1px solid var(--blue-border);border-left:none;padding:12px;font-size:12px;font-weight:600;color:var(--blue-bright)">Proof-first<br><span style="font-size:10px;font-weight:400;color:var(--text-muted)">not hype</span></div>
+      <div style="flex:1;background:#1A1A2E;border:1px solid var(--blue-border);border-left:none;padding:12px;font-size:12px;font-weight:600;color:var(--blue-bright)">Urgent<br><span style="font-size:10px;font-weight:400;color:var(--text-muted)">not pushy</span></div>
+    </div>
+  </div>
+
+  <div class="voice-grid">
+    <div class="voice-card vc-do">
+      <div class="vc-tag">✓ Use</div>
+      <div class="vc-text">"Save 3 hours in your first week or I refund you — no questions asked."</div>
+      <div class="vc-note">Specific claim, skin in the game, removes risk</div>
+    </div>
+    <div class="voice-card vc-dont">
+      <div class="vc-tag">✗ Avoid</div>
+      <div class="vc-text">"Transform your productivity journey with our holistic AI-powered solutions!"</div>
+      <div class="vc-note">Zero specificity, buzzword-heavy, untrustworthy</div>
+    </div>
+    <div class="voice-card vc-do">
+      <div class="vc-tag">✓ Use</div>
+      <div class="vc-text">"I work on your real clients, your real tools, your real brand."</div>
+      <div class="vc-note">Repetition creates rhythm and specificity simultaneously</div>
+    </div>
+    <div class="voice-card vc-dont">
+      <div class="vc-tag">✗ Avoid</div>
+      <div class="vc-text">"We provide customized AI training solutions for marketing teams."</div>
+      <div class="vc-note">Corporate "we," no personality, no proof</div>
+    </div>
+    <div class="voice-card vc-do">
+      <div class="vc-tag">✓ Use</div>
+      <div class="vc-text">"50+ trained. 8 years marketing. One intensive."</div>
+      <div class="vc-note">Short punchy fragments build trust fast</div>
+    </div>
+    <div class="voice-card vc-dont">
+      <div class="vc-tag">✗ Avoid</div>
+      <div class="vc-text">"Are you struggling with productivity? You're not alone! Let's go on this journey together! 🚀🔥"</div>
+      <div class="vc-note">Patronising, emoji-heavy, undermines expertise</div>
+    </div>
+  </div>
+</div>
+
+<!-- MOTION -->
+<div id="motion" class="section">
+  <div class="eyebrow">Interaction design</div>
+  <div class="title">Motion principles</div>
+  <div class="desc">Motion should feel like the product is alive — not anxious. Every animation earns its place by communicating state.</div>
+
+  <div class="motion-card">
+    <div class="mo-demo"><div class="anim-float" style="width:44px;height:44px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Syne',sans-serif;font-size:16px;font-weight:800">→</div></div>
+    <div class="mo-info">
+      <h4>Forward float — CTA signal</h4>
+      <p>Used on primary CTAs and progress milestones. Signals momentum without demanding attention. <code>ease-in-out · 2.4s · infinite · translateY -7px</code></p>
+    </div>
+  </div>
+
+  <div class="motion-card">
+    <div class="mo-demo"><div class="pulse-dot"></div></div>
+    <div class="mo-info">
+      <h4>Pulse — Live / active state</h4>
+      <p>Used on live session indicators and real-time counts. Mirrors the "●" badge on your live badge. <code>ease-out · 2s · infinite · scale + opacity</code></p>
+    </div>
+  </div>
+
+  <div class="motion-card">
+    <div class="mo-demo">
+      <div style="width:100%;background:rgba(255,255,255,0.06);border-radius:4px;height:6px;overflow:hidden">
+        <div id="shimmer-bar" class="shimmer-base" style="height:100%;width:60%;border-radius:4px;background:var(--bg-elevated)"></div>
+      </div>
+    </div>
+    <div class="mo-info">
+      <h4>Shimmer — Loading skeleton</h4>
+      <p>Replaces spinners. Used while sessions or data is loading. Keeps the UI alive and responsive. <code>linear · 1.6s · infinite · translateX</code></p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="grid-3">
+    <div class="card"><div style="font-size:18px;margin-bottom:8px">⚡</div><div style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:4px">Swift</div><div style="font-size:11px;color:var(--text-muted)">UI responses &lt;200ms. Transitions 200–400ms max</div></div>
+    <div class="card"><div style="font-size:18px;margin-bottom:8px">🎯</div><div style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:4px">Intentional</div><div style="font-size:11px;color:var(--text-muted)">Animate state changes only — no decorative loops</div></div>
+    <div class="card"><div style="font-size:18px;margin-bottom:8px">🌑</div><div style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:4px">Dark-aware</div><div style="font-size:11px;color:var(--text-muted)">All motion tested on dark surfaces — no light flash</div></div>
+  </div>
+</div>
+
+<script>
+const TABS = ['overview','logo','colors','typography','components','voice','motion'];
+function go(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab')[TABS.indexOf(id)].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copyHex(el, hex) {
+  navigator.clipboard.writeText(hex).catch(() => {});
+}
+</script>
+</body>
+</html>
